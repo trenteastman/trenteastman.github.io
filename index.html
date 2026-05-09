@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Bible Reading Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --parchment:    #f0e6c0;
+      --parchment-dk: #e2d4a0;
+      --parchment-lt: #faf5e0;
+      --bg:           #b8a87a;
+      --ink:          #1a0e04;
+      --ink-mid:      #3d2010;
+      --sepia:        #6b4018;
+      --terracotta:   #8b3510;
+      --terra-light:  #b84a18;
+      --gold:         #b08808;
+      --gold-light:   #d4aa20;
+      --wood-dk:      #6b3a10;
+      --wood-mid:     #a06030;
+      --wood-lt:      #c88848;
+      --border:       #a08848;
+      --border-lt:    #c8aa68;
+      --muted:        #7a5430;
+      --hover:        #ead8a0;
+      --shadow:       0 4px 24px rgba(30,12,0,0.22), 0 1px 6px rgba(30,12,0,0.14);
+      --radius:       4px;
+    }
+
+    /* ── Stone-ground body ─────────────────────────────────────────────────── */
+    body {
+      font-family: 'Lora', serif;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 15% 40%, rgba(170,150,100,0.5) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 70%, rgba(140,120,80,0.4) 0%, transparent 50%),
+        repeating-linear-gradient(
+          105deg,
+          transparent 0px, transparent 18px,
+          rgba(0,0,0,0.025) 18px, rgba(0,0,0,0.025) 19px
+        );
+      color: var(--ink);
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    /* ── Scroll wrapper ────────────────────────────────────────────────────── */
+    .scroll-wrap {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 1rem 3rem;
+    }
+
+    /* ── Scroll rollers ────────────────────────────────────────────────────── */
+    .roller {
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .roller-knob {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: radial-gradient(circle at 38% 38%,
+        #e0a860 0%, var(--wood-mid) 45%, var(--wood-dk) 100%);
+      box-shadow:
+        inset -3px -3px 8px rgba(0,0,0,0.35),
+        inset 2px 2px 5px rgba(255,220,140,0.25),
+        3px 3px 10px rgba(0,0,0,0.4);
+      position: relative;
+      z-index: 2;
+    }
+
+    .roller-knob::after {
+      content: '';
+      position: absolute;
+      inset: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, rgba(255,220,140,0.3), transparent 70%);
+      border: 1px solid rgba(255,200,100,0.2);
+    }
+
+    .roller-bar {
+      flex: 1;
+      height: 28px;
+      background: linear-gradient(180deg,
+        #e8b870 0%,
+        var(--wood-mid) 20%,
+        #d4a050 40%,
+        var(--wood-mid) 60%,
+        #c09040 80%,
+        var(--wood-dk) 100%
+      );
+      box-shadow:
+        inset 0 3px 4px rgba(255,220,140,0.2),
+        inset 0 -3px 4px rgba(0,0,0,0.2),
+        0 4px 10px rgba(0,0,0,0.3);
+      border-top: 1px solid rgba(255,220,140,0.2);
+      border-bottom: 1px solid rgba(0,0,0,0.25);
+    }
+
+    /* ── Scroll body (parchment) ───────────────────────────────────────────── */
+    .scroll-body {
+      background-color: var(--parchment);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px, transparent 23px,
+          rgba(120,90,30,0.06) 23px, rgba(120,90,30,0.06) 24px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent 0px, transparent 80px,
+          rgba(120,90,30,0.03) 80px, rgba(120,90,30,0.03) 81px
+        ),
+        radial-gradient(ellipse at 50% 0%,   rgba(200,170,80,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 10% 50%,  rgba(160,130,60,0.12) 0%, transparent 40%),
+        radial-gradient(ellipse at 90% 50%,  rgba(160,130,60,0.12) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 100%, rgba(200,170,80,0.15) 0%, transparent 60%);
+      box-shadow:
+        -8px 0 20px rgba(0,0,0,0.18),
+         8px 0 20px rgba(0,0,0,0.18),
+         0   0 60px rgba(0,0,0,0.12);
+      border-left:  3px solid rgba(120,90,20,0.25);
+      border-right: 3px solid rgba(120,90,20,0.25);
+    }
+
+    /* ── Header / Title area ───────────────────────────────────────────────── */
+    .scroll-header {
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      border-bottom: 2px solid var(--border);
+      position: relative;
+    }
+
+    .scroll-header::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: -5px;
+      left: 3rem;
+      right: 3rem;
+      height: 1px;
+      background: var(--border-lt);
+      opacity: 0.6;
+    }
+
+    .menorah {
+      margin: 0 auto 1.2rem;
+      display: block;
+      color: var(--gold);
+      filter: drop-shadow(0 1px 2px rgba(100,70,0,0.3));
+    }
+
+    .scroll-header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.08em;
+      text-shadow: 1px 1px 0 rgba(255,230,150,0.4);
+      margin-bottom: 0.5rem;
+    }
+
+    .scroll-header .subtitle {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--sepia);
+      margin-bottom: 1rem;
+    }
+
+    .ornamental-divider {
+      font-size: 0.85rem;
+      color: var(--gold);
+      letter-spacing: 0.4em;
+      opacity: 0.8;
+      user-select: none;
+    }
+
+    /* ── Main content grid ─────────────────────────────────────────────────── */
+    .scroll-content {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 0;
+    }
+
+    @media (max-width: 680px) {
+      .scroll-content { grid-template-columns: 1fr; }
+    }
+
+    .main-column {
+      padding: 2rem 2rem 2rem 2.5rem;
+      border-right: 1px solid var(--border);
+    }
+
+    .sidebar-column {
+      padding: 2rem 2rem 2rem 1.5rem;
+    }
+
+    @media (max-width: 680px) {
+      .main-column   { padding: 1.5rem; border-right: none; border-bottom: 1px solid var(--border); }
+      .sidebar-column { padding: 1.5rem; }
+    }
+
+    /* ── Reading Panel ─────────────────────────────────────────────────────── */
+    .reading-date {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.2rem;
+    }
+
+    .reading-meta {
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .badge-today {
+      background: var(--terracotta);
+      color: var(--parchment-lt);
+      font-size: 0.6rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.15rem 0.55rem;
+      border-radius: 2px;
+    }
+
+    .progress-wrap { margin-bottom: 1.6rem; }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--parchment-dk);
+      border-radius: 1px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--terracotta) 0%, var(--gold) 100%);
+      transition: width 0.4s ease;
+    }
+
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--sepia);
+      margin-bottom: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .section-label::before,
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .passages {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .passage-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1rem;
+      background: var(--parchment-lt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: var(--ink);
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      transition: background 0.15s, border-color 0.15s;
+      position: relative;
+    }
+
+    /* Double-rule frame on passage links */
+    .passage-link::before {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border: 1px solid rgba(160,136,72,0.3);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    .passage-link:hover {
+      background: var(--hover);
+      border-color: var(--gold);
+    }
+
+    .passage-link .p-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .scroll-icon {
+      color: var(--gold);
+      font-size: 0.9rem;
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    .passage-book {
+      font-weight: 600;
+      color: var(--ink-mid);
+    }
+
+    .passage-link .arrow {
+      color: var(--terracotta);
+      font-size: 0.8rem;
+      font-family: 'Inter', sans-serif;
+      flex-shrink: 0;
+      margin-left: 0.5rem;
+      opacity: 0.8;
+    }
+
+    /* ── Verse card ────────────────────────────────────────────────────────── */
+    .verse-card {
+      background: var(--parchment-dk);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.35rem 1.5rem;
+      position: relative;
+    }
+
+    .verse-card::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(160,136,72,0.35);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    .verse-card .verse-star {
+      display: block;
+      text-align: center;
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+      opacity: 0.7;
+      letter-spacing: 0.5em;
+    }
+
+    .verse-card blockquote {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--ink-mid);
+      margin-bottom: 0.65rem;
+      text-align: center;
+    }
+
+    .verse-card cite {
+      display: block;
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--sepia);
+      font-style: normal;
+    }
+
+    /* ── Sidebar ───────────────────────────────────────────────────────────── */
+    .sidebar-section {
+      margin-bottom: 2rem;
+    }
+
+    .sidebar-section:last-child { margin-bottom: 0; }
+
+    .sidebar-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--sepia);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .sidebar-title::before,
+    .sidebar-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Calendar ──────────────────────────────────────────────────────────── */
+    .calendar-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.9rem;
+    }
+
+    .cal-btn {
+      background: var(--parchment-dk);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-mid);
+      transition: background 0.15s;
+      line-height: 1;
+      font-family: 'Lora', serif;
+    }
+
+    .cal-btn:hover { background: var(--hover); border-color: var(--gold); }
+
+    .calendar-month-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.06em;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+
+    .cal-dow {
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-size: 0.52rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      padding: 0.35rem 0;
+    }
+
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.74rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.12s;
+      position: relative;
+      user-select: none;
+    }
+
+    .cal-day.empty    { cursor: default; }
+    .cal-day:not(.empty):hover { background: var(--hover); }
+    .cal-day.past     { color: var(--muted); }
+
+    .cal-day.completed::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .cal-day.is-today {
+      background: var(--ink-mid);
+      color: var(--parchment-lt);
+      font-weight: 600;
+    }
+
+    .cal-day.is-today::after     { background: rgba(250,240,210,0.5); }
+    .cal-day.is-selected:not(.is-today) { background: var(--terracotta); color: var(--parchment-lt); }
+    .cal-day.is-selected::after  { background: rgba(250,240,210,0.5); }
+
+    /* ── Stats ─────────────────────────────────────────────────────────────── */
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(160,136,72,0.3);
+      font-size: 0.8rem;
+    }
+
+    .stat-row:last-child { border-bottom: none; }
+
+    .stat-key {
+      font-family: 'Inter', sans-serif;
+      color: var(--muted);
+    }
+
+    .stat-val {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: var(--ink-mid);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Scroll footer area ────────────────────────────────────────────────── */
+    .scroll-footer {
+      padding: 1.2rem 2rem;
+      text-align: center;
+      border-top: 2px solid var(--border);
+      position: relative;
+    }
+
+    .scroll-footer::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: -5px;
+      left: 3rem;
+      right: 3rem;
+      height: 1px;
+      background: var(--border-lt);
+      opacity: 0.6;
+    }
+
+    .scroll-footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .scroll-footer a { color: var(--sepia); }
+
+    .scroll-footer .footer-divider {
+      font-size: 0.8rem;
+      color: var(--gold);
+      letter-spacing: 0.35em;
+      opacity: 0.7;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="scroll-wrap">
+
+  <!-- Top roller -->
+  <div class="roller">
+    <div class="roller-knob"></div>
+    <div class="roller-bar"></div>
+    <div class="roller-knob"></div>
+  </div>
+
+  <div class="scroll-body">
+
+    <!-- Header -->
+    <div class="scroll-header">
+      <!-- Menorah SVG -->
+      <svg class="menorah" width="72" height="52" viewBox="0 0 72 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Base -->
+        <rect x="29" y="46" width="14" height="4" rx="1" fill="currentColor"/>
+        <rect x="22" y="43" width="28" height="3" rx="1" fill="currentColor"/>
+        <!-- Central stem -->
+        <rect x="34.5" y="10" width="3" height="33" rx="1" fill="currentColor"/>
+        <!-- Branches — left side (3 arms) -->
+        <!-- Arm 1: short inner left -->
+        <path d="M36,30 Q26,30 24,16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <!-- Arm 2: mid left -->
+        <path d="M36,30 Q18,30 15,14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <!-- Arm 3: outer left -->
+        <path d="M36,30 Q10,30  6,14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <!-- Branches — right side (3 arms) -->
+        <path d="M36,30 Q46,30 48,16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <path d="M36,30 Q54,30 57,14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <path d="M36,30 Q62,30 66,14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <!-- Flames (teardrop shapes) -->
+        <ellipse cx="36"  cy="7"  rx="2.5" ry="3.5" fill="currentColor" opacity="0.9"/>
+        <ellipse cx="24"  cy="13" rx="2"   ry="2.8" fill="currentColor" opacity="0.85"/>
+        <ellipse cx="15"  cy="11" rx="2"   ry="2.8" fill="currentColor" opacity="0.85"/>
+        <ellipse cx="6"   cy="11" rx="2"   ry="2.8" fill="currentColor" opacity="0.85"/>
+        <ellipse cx="48"  cy="13" rx="2"   ry="2.8" fill="currentColor" opacity="0.85"/>
+        <ellipse cx="57"  cy="11" rx="2"   ry="2.8" fill="currentColor" opacity="0.85"/>
+        <ellipse cx="66"  cy="11" rx="2"   ry="2.8" fill="currentColor" opacity="0.85"/>
+      </svg>
+
+      <h1>Daily Bible Reading</h1>
+      <p class="subtitle">A complete journey through Scripture in one year</p>
+      <div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+    </div>
+
+    <!-- Main scroll content -->
+    <div class="scroll-content">
+
+      <!-- Reading column -->
+      <div class="main-column">
+        <div id="readingCard"></div>
+      </div>
+
+      <!-- Sidebar column -->
+      <div class="sidebar-column">
+
+        <div class="sidebar-section">
+          <div class="sidebar-title">Calendar</div>
+          <div class="calendar-nav">
+            <button class="cal-btn" id="prevMonth">&#8249;</button>
+            <span class="calendar-month-label" id="calLabel"></span>
+            <button class="cal-btn" id="nextMonth">&#8250;</button>
+          </div>
+          <div class="calendar-grid" id="calGrid"></div>
+        </div>
+
+        <div class="sidebar-section" id="statsCard"></div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="scroll-footer">
+      <div class="footer-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+      <p>
+        Passages open in <a href="https://www.biblegateway.com" target="_blank" rel="noopener">BibleGateway</a> (NIV)
+        &mdash; all 1,189 chapters of Scripture across 365 days
+      </p>
+    </div>
+
+  </div><!-- /scroll-body -->
+
+  <!-- Bottom roller -->
+  <div class="roller">
+    <div class="roller-knob"></div>
+    <div class="roller-bar"></div>
+    <div class="roller-knob"></div>
+  </div>
+
+</div><!-- /scroll-wrap -->
+
+<script>
+// ── Bible books: name, chapters ──────────────────────────────────────────────
+const BOOKS = [
+  ['Genesis',50],['Exodus',40],['Leviticus',27],['Numbers',36],['Deuteronomy',34],
+  ['Joshua',24],['Judges',21],['Ruth',4],['1 Samuel',31],['2 Samuel',24],
+  ['1 Kings',22],['2 Kings',25],['1 Chronicles',29],['2 Chronicles',36],
+  ['Ezra',10],['Nehemiah',13],['Esther',10],['Job',42],['Psalms',150],
+  ['Proverbs',31],['Ecclesiastes',12],['Song of Solomon',8],['Isaiah',66],
+  ['Jeremiah',52],['Lamentations',5],['Ezekiel',48],['Daniel',12],
+  ['Hosea',14],['Joel',3],['Amos',9],['Obadiah',1],['Jonah',4],
+  ['Micah',7],['Nahum',3],['Habakkuk',3],['Zephaniah',3],['Haggai',2],
+  ['Zechariah',14],['Malachi',4],
+  ['Matthew',28],['Mark',16],['Luke',24],['John',21],['Acts',28],
+  ['Romans',16],['1 Corinthians',16],['2 Corinthians',13],['Galatians',6],
+  ['Ephesians',6],['Philippians',4],['Colossians',4],['1 Thessalonians',5],
+  ['2 Thessalonians',3],['1 Timothy',6],['2 Timothy',4],['Titus',3],
+  ['Philemon',1],['Hebrews',13],['James',5],['1 Peter',5],['2 Peter',3],
+  ['1 John',5],['2 John',1],['3 John',1],['Jude',1],['Revelation',22],
+];
+
+const VERSES = [
+  { text: 'Your word is a lamp to my feet and a light to my path.', ref: 'Psalm 119:105' },
+  { text: 'For the word of God is alive and active, sharper than any double-edged sword.', ref: 'Hebrews 4:12' },
+  { text: 'All Scripture is God-breathed and is useful for teaching, rebuking, correcting and training in righteousness.', ref: '2 Timothy 3:16' },
+  { text: 'Blessed is the one who reads aloud the words of this prophecy, and blessed are those who hear it.', ref: 'Revelation 1:3' },
+  { text: 'Do not let this Book of the Law depart from your mouth; meditate on it day and night.', ref: 'Joshua 1:8' },
+  { text: 'The grass withers and the flowers fall, but the word of our God endures forever.', ref: 'Isaiah 40:8' },
+  { text: 'How can a young person stay on the path of purity? By living according to your word.', ref: 'Psalm 119:9' },
+  { text: 'In the beginning was the Word, and the Word was with God, and the Word was God.', ref: 'John 1:1' },
+  { text: 'Heaven and earth will pass away, but my words will never pass away.', ref: 'Matthew 24:35' },
+  { text: 'The unfolding of your words gives light; it gives understanding to the simple.', ref: 'Psalm 119:130' },
+  { text: 'Man shall not live on bread alone, but on every word that comes from the mouth of God.', ref: 'Matthew 4:4' },
+  { text: 'I have hidden your word in my heart that I might not sin against you.', ref: 'Psalm 119:11' },
+];
+
+function buildPlan() {
+  const chapters = [];
+  for (const [book, count] of BOOKS) {
+    for (let ch = 1; ch <= count; ch++) chapters.push([book, ch]);
+  }
+  const plan = [];
+  const total = chapters.length;
+  let idx = 0;
+  for (let day = 0; day < 365; day++) {
+    const count = Math.round((total - idx) / (365 - day));
+    plan.push(chapters.slice(idx, idx + count));
+    idx += count;
+  }
+  return plan;
+}
+
+const PLAN = buildPlan();
+
+function dayOfYear(date) {
+  const jan1 = new Date(date.getFullYear(), 0, 1);
+  return Math.ceil((date - jan1) / 86400000) + 1;
+}
+
+function groupChapters(chapters) {
+  const groups = [];
+  let cur = null;
+  for (const [book, ch] of chapters) {
+    if (cur && cur.book === book && ch === cur.end + 1) {
+      cur.end = ch;
+    } else {
+      if (cur) groups.push(cur);
+      cur = { book, start: ch, end: ch };
+    }
+  }
+  if (cur) groups.push(cur);
+  return groups;
+}
+
+function bgwUrl(g) {
+  const q = g.start === g.end ? `${g.book} ${g.start}` : `${g.book} ${g.start}-${g.end}`;
+  return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(q)}&version=NIV`;
+}
+
+function sameDay(a, b) {
+  return a.getFullYear() === b.getFullYear() &&
+         a.getMonth()    === b.getMonth()    &&
+         a.getDate()     === b.getDate();
+}
+
+const MONTH_NAMES = ['January','February','March','April','May','June',
+                     'July','August','September','October','November','December'];
+const DOW = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+const today = new Date(); today.setHours(0,0,0,0);
+let selected = new Date(today);
+let calYear  = today.getFullYear();
+let calMonth = today.getMonth();
+
+function renderReading(date) {
+  const doy      = Math.min(dayOfYear(date), 365);
+  const idx      = doy - 1;
+  const chapters = PLAN[idx] || [];
+  const groups   = groupChapters(chapters);
+
+  const isToday     = sameDay(date, today);
+  const todayDoy    = dayOfYear(today);
+  const pct         = Math.min(100, Math.round((todayDoy / 365) * 100));
+  const selectedPct = Math.round((doy / 365) * 100);
+
+  const dateLabel = date.toLocaleDateString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+
+  const passagesHtml = groups.map(g => `
+    <a class="passage-link" href="${bgwUrl(g)}" target="_blank" rel="noopener">
+      <span class="p-left">
+        <span class="scroll-icon">&#x1F4DC;</span>
+        <span><span class="passage-book">${g.book}</span> ${g.start === g.end ? g.start : g.start + '&ndash;' + g.end}</span>
+      </span>
+      <span class="arrow">Read &rarr;</span>
+    </a>`).join('');
+
+  const verse = VERSES[idx % VERSES.length];
+
+  document.getElementById('readingCard').innerHTML = `
+    <div class="reading-date">${dateLabel}</div>
+    <div class="reading-meta">
+      Day ${doy} of 365
+      ${isToday ? '<span class="badge-today">Today</span>' : ''}
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Year progress</span>
+        <span>${pct}%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${isToday ? pct : selectedPct}%"></div>
+      </div>
+    </div>
+    <div class="section-label">Today&rsquo;s Readings &mdash; ${chapters.length} chapter${chapters.length !== 1 ? 's' : ''}</div>
+    <div class="passages">${passagesHtml}</div>
+    <div class="verse-card">
+      <span class="verse-star">&#10022; &nbsp; &#10022; &nbsp; &#10022;</span>
+      <blockquote>&ldquo;${verse.text}&rdquo;</blockquote>
+      <cite>&mdash; ${verse.ref}</cite>
+    </div>`;
+}
+
+function renderCalendar() {
+  document.getElementById('calLabel').textContent = `${MONTH_NAMES[calMonth]} ${calYear}`;
+
+  const firstDow    = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+  let html = DOW.map(d => `<div class="cal-dow">${d}</div>`).join('');
+  for (let i = 0; i < firstDow; i++) html += '<div class="cal-day empty"></div>';
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = new Date(calYear, calMonth, d);
+    cell.setHours(0,0,0,0);
+    const isT    = sameDay(cell, today);
+    const isS    = sameDay(cell, selected);
+    const isPast = cell < today && !isT;
+    let cls = 'cal-day';
+    if (isT)    cls += ' is-today';
+    if (isS)    cls += ' is-selected';
+    if (isPast) cls += ' past completed';
+    html += `<div class="${cls}" data-ts="${cell.getTime()}">${d}</div>`;
+  }
+
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = html;
+  grid.querySelectorAll('.cal-day:not(.empty)').forEach(el => {
+    el.addEventListener('click', () => {
+      selected = new Date(+el.dataset.ts);
+      renderReading(selected);
+      renderCalendar();
+    });
+  });
+}
+
+function renderStats() {
+  const todayDoy      = dayOfYear(today);
+  const completedDays = todayDoy - 1;
+  const chaptersRead  = PLAN.slice(0, completedDays).reduce((s, d) => s + d.length, 0);
+  const pct           = Math.min(100, Math.round((todayDoy / 365) * 100));
+  const remaining     = 365 - todayDoy;
+
+  document.getElementById('statsCard').innerHTML = `
+    <div class="sidebar-title">Progress</div>
+    <div class="stat-row"><span class="stat-key">Days completed</span><span class="stat-val">${completedDays}</span></div>
+    <div class="stat-row"><span class="stat-key">Days remaining</span><span class="stat-val">${remaining}</span></div>
+    <div class="stat-row"><span class="stat-key">Chapters read</span><span class="stat-val">${chaptersRead.toLocaleString()}</span></div>
+    <div class="stat-row"><span class="stat-key">Total chapters</span><span class="stat-val">1,189</span></div>
+    <div class="stat-row"><span class="stat-key">Year complete</span><span class="stat-val">${pct}%</span></div>`;
+}
+
+document.getElementById('prevMonth').addEventListener('click', () => {
+  calMonth--;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+});
+
+document.getElementById('nextMonth').addEventListener('click', () => {
+  calMonth++;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+});
+
+renderReading(selected);
+renderCalendar();
+renderStats();
+</script>
+</body>
+</html>
