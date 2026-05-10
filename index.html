@@ -5,150 +5,199 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daily Bible Reading Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #07050302;
-      --stone:     #0d0b08;
-      --panel:     #130f0a;
-      --panel-lt:  #1c1610;
-      --gold:      #c9a41e;
-      --gold-lt:   #e4c84a;
-      --gold-dk:   #7a6010;
-      --crimson:   #7a1515;
-      --crimson-lt:#a82020;
-      --blue:      #152060;
-      --ivory:     #f2e6c4;
-      --ivory-dk:  #d4c49a;
-      --ivory-dim: #9a8860;
-      --border:    #c9a41e;
-      --border-dim:#5a4810;
-      --shadow:    0 8px 40px rgba(0,0,0,0.75), 0 2px 8px rgba(0,0,0,0.5);
-      --glow:      0 0 30px rgba(201,164,30,0.12);
-      --mono:      'Courier New', monospace;
+      --space:      #020810;
+      --deep:       #060e1e;
+      --panel:      #080f20;
+      --panel-lt:   #0d1830;
+      --star:       #e8f0ff;
+      --moon:       #c8d8f8;
+      --muted:      #4a6890;
+      --nebula-p:   #7038b8;
+      --nebula-t:   #1888a0;
+      --nebula-pk:  #b02870;
+      --accent:     #6ab0f0;
+      --gold:       #f0d060;
+      --border:     rgba(60,110,200,0.22);
+      --border-glow:rgba(100,160,240,0.18);
+      --glow-p:     rgba(112,56,184,0.25);
+      --glow-t:     rgba(24,136,160,0.2);
+      --text:       #c8daf0;
+      --shadow:     0 8px 40px rgba(0,0,0,0.8), 0 2px 10px rgba(0,0,0,0.6);
     }
 
-    /* ── Stone interior, candlelit ─────────────────────────────────────── */
     body {
-      font-family: 'EB Garamond', serif;
-      background-color: var(--stone);
-      background-image:
-        /* Subtle mosaic tile grid */
-        linear-gradient(rgba(201,164,30,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(201,164,30,0.04) 1px, transparent 1px),
-        /* Candlelight warmth pools */
-        radial-gradient(ellipse at 25% 55%, rgba(180,100,10,0.07) 0%, transparent 45%),
-        radial-gradient(ellipse at 75% 35%, rgba(180,100,10,0.06) 0%, transparent 40%),
-        radial-gradient(ellipse at 50% 80%, rgba(140,80,5,0.08)  0%, transparent 50%);
-      background-size: 32px 32px, 32px 32px, 100% 100%, 100% 100%, 100% 100%;
-      color: var(--ivory);
+      font-family: 'Inter', sans-serif;
+      background-color: var(--space);
+      color: var(--text);
       min-height: 100vh;
-      line-height: 1.7;
+      line-height: 1.65;
+      overflow-x: hidden;
     }
 
-    /* ── Header: narthex at candlelight ────────────────────────────────── */
+    /* ── Star canvas (fixed, behind everything) ────────────────────────── */
+    #starfield {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Shooting stars ────────────────────────────────────────────────── */
+    .shooting-stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .shoot {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+      border-radius: 50%;
+      opacity: 0;
+      animation: shootAcross linear infinite;
+    }
+
+    @keyframes shootAcross {
+      0%   { opacity: 0; transform: translateX(0) translateY(0); }
+      5%   { opacity: 1; }
+      20%  { opacity: 0; transform: translateX(220px) translateY(60px); }
+      100% { opacity: 0; transform: translateX(220px) translateY(60px); }
+    }
+
+    /* ── Header ────────────────────────────────────────────────────────── */
     header {
       position: relative;
+      z-index: 2;
       overflow: hidden;
       text-align: center;
-      background:
-        radial-gradient(ellipse at 50% 140%, rgba(210,130,20,0.32) 0%, transparent 58%),
-        radial-gradient(ellipse at 18% 90%,  rgba(190,110,10,0.14) 0%, transparent 38%),
-        radial-gradient(ellipse at 82% 90%,  rgba(190,110,10,0.14) 0%, transparent 38%),
-        linear-gradient(180deg, #060402 0%, #0c0906 35%, #130f08 70%, #1a140a 100%);
+      background: linear-gradient(180deg,
+        #010408 0%,
+        #040a18 20%,
+        #070e22 50%,
+        #0a1430 75%,
+        #0d182e 100%
+      );
       padding: 0;
     }
 
-    /* Byzantine mosaic border strip at top */
-    .mosaic-top {
-      height: 10px;
-      background: repeating-linear-gradient(
-        90deg,
-        #c9a41e 0px,  #c9a41e 6px,
-        #7a6010 6px,  #7a6010 8px,
-        #e4c84a 8px,  #e4c84a 14px,
-        #7a6010 14px, #7a6010 16px,
-        #c9a41e 16px, #c9a41e 22px,
-        #906c14 22px, #906c14 24px
-      );
+    /* Nebula glow blobs */
+    .nebula-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 15% 60%, rgba(112,56,184,0.18) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 40%, rgba(24,136,160,0.14) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 90%, rgba(176,40,112,0.10) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 20%, rgba(60,110,200,0.12) 0%, transparent 35%);
     }
 
-    /* Thin gold rule below the mosaic strip */
-    .gold-rule { height: 1px; background: var(--gold); opacity: 0.5; }
+    /* Header star-dust overlay */
+    .header-stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(1px 1px at  7%  12%, rgba(255,255,255,0.85) 0%, transparent 100%),
+        radial-gradient(1px 1px at 14%  55%, rgba(255,255,255,0.6)  0%, transparent 100%),
+        radial-gradient(1px 1px at 22%  28%, rgba(255,255,255,0.75) 0%, transparent 100%),
+        radial-gradient(2px 2px at 30%  72%, rgba(255,255,255,0.9)  0%, transparent 100%),
+        radial-gradient(1px 1px at 38%  18%, rgba(255,255,255,0.65) 0%, transparent 100%),
+        radial-gradient(1px 1px at 46%  82%, rgba(255,255,255,0.7)  0%, transparent 100%),
+        radial-gradient(2px 2px at 55%  35%, rgba(255,255,255,0.85) 0%, transparent 100%),
+        radial-gradient(1px 1px at 63%  62%, rgba(255,255,255,0.6)  0%, transparent 100%),
+        radial-gradient(1px 1px at 71%  22%, rgba(255,255,255,0.8)  0%, transparent 100%),
+        radial-gradient(1px 1px at 79%  78%, rgba(255,255,255,0.65) 0%, transparent 100%),
+        radial-gradient(2px 2px at 87%  45%, rgba(255,255,255,0.9)  0%, transparent 100%),
+        radial-gradient(1px 1px at 93%  88%, rgba(255,255,255,0.7)  0%, transparent 100%),
+        radial-gradient(1px 1px at  3%  90%, rgba(255,255,255,0.55) 0%, transparent 100%),
+        radial-gradient(1px 1px at 50%   8%, rgba(200,220,255,0.8)  0%, transparent 100%);
+    }
 
     .header-inner {
-      padding: 2.8rem 1.5rem 2.4rem;
       position: relative;
-      z-index: 2;
+      z-index: 3;
+      padding: 3rem 1.5rem 2.5rem;
     }
 
-    /* Candle pair SVG */
-    .candle-row {
+    /* Moon + constellation row */
+    .sky-scene {
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
-      gap: 3.5rem;
-      margin-bottom: 1.4rem;
+      gap: 2.5rem;
+      margin-bottom: 1.5rem;
     }
 
-    .cross-wrap { flex-shrink: 0; }
+    /* Crescent moon */
+    .moon-svg { filter: drop-shadow(0 0 16px rgba(180,210,255,0.5)); }
 
-    /* Orthodox triple-bar cross */
-    .ortho-cross {
-      color: var(--gold);
-      filter: drop-shadow(0 0 10px rgba(201,164,30,0.5));
-    }
-
-    /* Ornamental arc above title */
-    .header-arc {
-      font-size: 0.65rem;
-      letter-spacing: 0.4em;
-      color: rgba(201,164,30,0.45);
-      font-family: var(--mono);
-      text-transform: uppercase;
-      margin-bottom: 0.8rem;
-    }
+    /* Crux / Southern Cross constellation */
+    .crux-svg { opacity: 0.75; }
 
     header h1 {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
-      font-weight: 700;
-      color: var(--ivory);
-      letter-spacing: 0.1em;
+      font-family: 'Raleway', sans-serif;
+      font-size: clamp(1.6rem, 4.5vw, 2.7rem);
+      font-weight: 300;
+      color: var(--star);
+      letter-spacing: 0.12em;
       text-shadow:
-        0 0 30px rgba(201,164,30,0.4),
-        0 2px 6px rgba(0,0,0,0.8);
+        0 0 30px rgba(100,160,240,0.5),
+        0 0 60px rgba(112,56,184,0.3),
+        0 2px 8px rgba(0,0,0,0.8);
       margin-bottom: 0.45rem;
     }
 
     header .subtitle {
-      font-family: 'EB Garamond', serif;
-      font-style: italic;
-      font-size: 1rem;
-      color: var(--ivory-dk);
-      opacity: 0.75;
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 0.88rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       margin-bottom: 1.1rem;
     }
 
-    .header-divider {
-      color: var(--gold);
-      font-size: 1rem;
-      letter-spacing: 0.6em;
-      opacity: 0.55;
+    .star-divider {
+      font-size: 0.75rem;
+      color: rgba(106,176,240,0.4);
+      letter-spacing: 0.7em;
     }
 
-    /* Gold rule + mosaic at bottom of header */
-    .header-bottom { position: relative; }
+    /* Horizon glow at bottom of header */
+    .horizon {
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%, rgba(60,110,200,0.4) 30%,
+        rgba(112,56,184,0.5) 50%,
+        rgba(60,110,200,0.4) 70%, transparent 100%
+      );
+    }
+
+    .horizon-glow {
+      height: 20px;
+      background: linear-gradient(180deg,
+        rgba(60,110,200,0.08) 0%, transparent 100%
+      );
+    }
 
     /* ── Layout ────────────────────────────────────────────────────────── */
     .container {
+      position: relative;
+      z-index: 2;
       max-width: 1000px;
       margin: 0 auto;
       padding: 2rem 1rem;
       display: grid;
-      grid-template-columns: 1fr 310px;
+      grid-template-columns: 1fr 308px;
       gap: 1.5rem;
       align-items: start;
     }
@@ -157,80 +206,97 @@
       .container { grid-template-columns: 1fr; padding: 1rem; }
     }
 
-    /* ── Icon-panel cards ──────────────────────────────────────────────── */
-    .icon-panel {
-      background: var(--panel);
-      border: 1px solid var(--gold-dk);
-      border-radius: 2px;
-      box-shadow: var(--shadow), var(--glow);
+    /* ── Glass panels ──────────────────────────────────────────────────── */
+    .glass {
+      background: rgba(8, 15, 32, 0.88);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: var(--shadow), 0 0 0 1px rgba(100,160,240,0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       position: relative;
-      overflow: visible;
+      overflow: hidden;
     }
 
-    /* Double-border icon frame effect */
-    .icon-panel::before {
+    /* Subtle inner nebula shimmer on each card */
+    .glass::before {
       content: '';
       position: absolute;
-      inset: 4px;
-      border: 1px solid rgba(201,164,30,0.2);
-      border-radius: 1px;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 0% 0%,   rgba(112,56,184,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse at 100% 100%, rgba(24,136,160,0.06) 0%, transparent 55%);
       pointer-events: none;
-      z-index: 0;
     }
 
-    /* Gold header strip on each panel */
-    .panel-header {
-      background: linear-gradient(90deg, var(--gold-dk), #c9a41e 30%, #e4c84a 50%, #c9a41e 70%, var(--gold-dk));
-      padding: 0.5rem 1.25rem;
+    /* Glowing top edge */
+    .glass::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent, rgba(106,176,240,0.4), rgba(112,56,184,0.4), rgba(106,176,240,0.4), transparent
+      );
+    }
+
+    .panel-top {
+      padding: 0.55rem 1.25rem;
+      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background: rgba(6,12,24,0.5);
     }
 
-    .panel-header span {
-      font-family: 'Cinzel', serif;
-      font-size: 0.58rem;
-      letter-spacing: 0.22em;
+    .panel-top span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--stone);
+      color: var(--muted);
     }
 
-    .panel-body {
-      padding: 1.6rem 1.75rem;
-      position: relative;
-      z-index: 1;
+    .panel-top .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+      flex-shrink: 0;
     }
 
-    /* ── Reading content ───────────────────────────────────────────────── */
+    .panel-body { padding: 1.6rem 1.75rem; position: relative; }
+
+    /* ── Reading ───────────────────────────────────────────────────────── */
     .reading-date {
-      font-family: 'Cinzel', serif;
-      font-size: 1.2rem;
+      font-family: 'Raleway', sans-serif;
+      font-size: 1.25rem;
       font-weight: 600;
-      color: var(--gold-lt);
-      letter-spacing: 0.04em;
+      color: var(--star);
+      letter-spacing: 0.02em;
       margin-bottom: 0.2rem;
     }
 
     .reading-meta {
-      font-family: var(--mono);
-      font-size: 0.67rem;
-      color: var(--ivory-dim);
+      font-size: 0.72rem;
+      color: var(--muted);
       margin-bottom: 1.4rem;
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
     }
 
     .badge-today {
-      background: var(--crimson);
-      color: var(--ivory);
+      background: linear-gradient(135deg, var(--nebula-p), var(--nebula-t));
+      color: var(--star);
       font-size: 0.58rem;
-      font-family: 'Cinzel', serif;
+      font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      padding: 0.12rem 0.5rem;
-      border: 1px solid rgba(201,164,30,0.3);
+      padding: 0.15rem 0.6rem;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(112,56,184,0.4);
     }
 
     .progress-wrap { margin-bottom: 1.5rem; }
@@ -238,38 +304,39 @@
     .progress-label {
       display: flex;
       justify-content: space-between;
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      color: var(--ivory-dim);
+      font-size: 0.65rem;
+      color: var(--muted);
       margin-bottom: 0.4rem;
       letter-spacing: 0.06em;
     }
 
     .progress-bar {
-      height: 8px;
-      background: #0a0806;
-      border: 1px solid var(--border-dim);
+      height: 6px;
+      background: rgba(6,12,24,0.8);
+      border: 1px solid rgba(60,110,200,0.2);
+      border-radius: 3px;
       overflow: hidden;
     }
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--crimson) 0%, #b87a10 50%, var(--gold-lt) 100%);
+      background: linear-gradient(90deg,
+        var(--nebula-p) 0%, var(--nebula-t) 50%, var(--accent) 100%
+      );
+      border-radius: 3px;
       transition: width 0.4s ease;
-      box-shadow: 0 0 8px rgba(201,164,30,0.4);
+      box-shadow: 0 0 8px rgba(106,176,240,0.5);
     }
 
     .section-label {
-      font-family: 'Cinzel', serif;
       font-size: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 0.22em;
-      color: var(--gold);
-      margin-bottom: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
       display: flex;
       align-items: center;
       gap: 0.6rem;
-      opacity: 0.8;
     }
 
     .section-label::before,
@@ -277,7 +344,7 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold-dk), transparent);
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
     }
 
     /* ── Passage links ─────────────────────────────────────────────────── */
@@ -292,84 +359,86 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.85rem 1.05rem;
-      background: #0d0a06;
-      border: 1px solid var(--border-dim);
-      border-left: 2px solid var(--gold-dk);
+      padding: 0.85rem 1rem;
+      background: rgba(4, 10, 22, 0.7);
+      border: 1px solid var(--border);
+      border-left: 2px solid rgba(112,56,184,0.5);
+      border-radius: 4px;
       text-decoration: none;
-      color: var(--ivory);
-      font-family: 'EB Garamond', serif;
-      font-size: 1.05rem;
-      transition: background 0.15s, border-color 0.15s;
+      color: var(--text);
+      font-size: 1rem;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
     }
 
     .passage-link:hover {
-      background: #1c1610;
-      border-left-color: var(--gold);
-      color: var(--gold-lt);
+      background: rgba(13, 24, 48, 0.9);
+      border-color: rgba(106,176,240,0.4);
+      border-left-color: var(--accent);
+      box-shadow: 0 0 16px rgba(106,176,240,0.1);
+      color: var(--star);
     }
 
-    .passage-link:hover .arrow { color: var(--gold-lt); }
+    .p-left { display: flex; align-items: center; gap: 0.6rem; }
 
-    .passage-book { font-weight: 500; }
+    .star-bullet {
+      color: var(--nebula-p);
+      font-size: 0.6rem;
+      flex-shrink: 0;
+      text-shadow: 0 0 6px var(--nebula-p);
+    }
+
+    .passage-book { font-weight: 500; color: var(--star); }
 
     .passage-link .arrow {
-      font-family: 'Cinzel', serif;
-      font-size: 0.65rem;
-      color: var(--ivory-dim);
+      font-size: 0.7rem;
+      color: var(--muted);
       flex-shrink: 0;
-      margin-left: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      margin-left: 0.5rem;
+      letter-spacing: 0.06em;
+      transition: color 0.15s;
     }
 
-    /* ── Verse / Epistle reading ───────────────────────────────────────── */
+    .passage-link:hover .arrow { color: var(--accent); }
+
+    /* ── Verse card ────────────────────────────────────────────────────── */
     .verse-card {
-      background: linear-gradient(135deg, #100c06 0%, var(--panel-lt) 100%);
-      border: 1px solid var(--border-dim);
-      padding: 1.4rem 1.5rem;
+      background: linear-gradient(135deg,
+        rgba(112,56,184,0.12) 0%,
+        rgba(24,136,160,0.10) 50%,
+        rgba(6,12,24,0.6) 100%
+      );
+      border: 1px solid rgba(112,56,184,0.25);
+      border-radius: 6px;
+      padding: 1.35rem 1.5rem;
       position: relative;
     }
 
-    .verse-card::before,
-    .verse-card::after {
-      font-family: 'Cinzel', serif;
-      font-size: 0.52rem;
-      letter-spacing: 0.2em;
-      color: var(--gold);
-      opacity: 0.6;
-      position: absolute;
-    }
-
-    .verse-card::before {
-      content: '✦  SCRIPTURE  ✦';
-      top: -0.55rem;
-      left: 50%;
-      transform: translateX(-50%);
-      white-space: nowrap;
-      background: var(--panel);
-      padding: 0 0.6rem;
+    .verse-star-row {
+      text-align: center;
+      font-size: 0.65rem;
+      color: rgba(112,56,184,0.5);
+      letter-spacing: 0.6em;
+      margin-bottom: 0.85rem;
     }
 
     .verse-card blockquote {
-      font-family: 'EB Garamond', serif;
+      font-family: 'Inter', sans-serif;
       font-style: italic;
-      font-size: 1rem;
-      line-height: 1.85;
-      color: var(--ivory-dk);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--moon);
       text-align: center;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.65rem;
+      font-weight: 300;
     }
 
     .verse-card cite {
       display: block;
       text-align: center;
-      font-family: 'Cinzel', serif;
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      color: var(--gold);
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      color: var(--muted);
       font-style: normal;
-      opacity: 0.7;
       text-transform: uppercase;
     }
 
@@ -385,28 +454,32 @@
     }
 
     .cal-btn {
-      background: #0d0a06;
-      border: 1px solid var(--border-dim);
-      width: 28px;
-      height: 28px;
+      background: rgba(4,10,22,0.7);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      width: 28px; height: 28px;
       cursor: pointer;
       font-size: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--ivory-dim);
-      transition: border-color 0.14s, color 0.14s;
+      color: var(--muted);
+      transition: border-color 0.14s, color 0.14s, box-shadow 0.14s;
       line-height: 1;
     }
 
-    .cal-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .cal-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 8px rgba(106,176,240,0.2);
+    }
 
     .calendar-month-label {
-      font-family: 'Cinzel', serif;
+      font-family: 'Raleway', sans-serif;
       font-size: 0.85rem;
       font-weight: 600;
-      color: var(--gold-lt);
-      letter-spacing: 0.06em;
+      color: var(--star);
+      letter-spacing: 0.08em;
     }
 
     .calendar-grid {
@@ -417,14 +490,12 @@
 
     .cal-dow {
       text-align: center;
-      font-family: 'Cinzel', serif;
-      font-size: 0.5rem;
-      font-weight: 600;
+      font-size: 0.52rem;
+      font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--ivory-dim);
+      color: var(--muted);
       padding: 0.35rem 0;
-      opacity: 0.6;
     }
 
     .cal-day {
@@ -432,164 +503,166 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: var(--mono);
-      font-size: 0.7rem;
+      font-size: 0.72rem;
+      border-radius: 4px;
       cursor: pointer;
       transition: background 0.12s, color 0.12s;
       position: relative;
       user-select: none;
-      color: var(--ivory-dk);
+      color: var(--text);
     }
 
     .cal-day.empty   { cursor: default; }
-    .cal-day:not(.empty):hover { background: #1c1610; color: var(--gold-lt); }
-    .cal-day.past    { color: var(--ivory-dim); opacity: 0.5; }
+    .cal-day:not(.empty):hover { background: rgba(13,24,48,0.8); color: var(--star); }
+    .cal-day.past    { color: var(--muted); opacity: 0.5; }
 
     .cal-day.completed::after {
-      content: '';
+      content: '·';
       position: absolute;
-      bottom: 2px;
+      bottom: 0px;
       left: 50%;
       transform: translateX(-50%);
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: var(--gold-dk);
+      font-size: 8px;
+      color: var(--nebula-p);
+      line-height: 1;
     }
 
     .cal-day.is-today {
-      background: var(--crimson);
-      color: var(--ivory);
-      font-weight: 700;
+      background: linear-gradient(135deg, var(--nebula-p), var(--nebula-t));
+      color: var(--star);
+      font-weight: 600;
+      box-shadow: 0 0 12px rgba(112,56,184,0.4);
     }
 
-    .cal-day.is-today::after      { background: rgba(242,230,196,0.4); }
-    .cal-day.is-selected:not(.is-today) { background: var(--gold-dk); color: var(--ivory); }
-    .cal-day.is-selected::after   { background: rgba(242,230,196,0.4); }
+    .cal-day.is-today::after      { color: rgba(232,240,255,0.5); }
+    .cal-day.is-selected:not(.is-today) {
+      background: rgba(60,110,200,0.25);
+      color: var(--star);
+      border: 1px solid rgba(106,176,240,0.4);
+    }
 
     /* Stats */
     .stat-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.45rem 0;
-      border-bottom: 1px solid rgba(201,164,30,0.1);
-      font-size: 0.88rem;
+      padding: 0.42rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
     }
 
     .stat-row:last-child { border-bottom: none; }
-
-    .stat-key {
-      font-family: 'EB Garamond', serif;
-      font-style: italic;
-      color: var(--ivory-dim);
-      font-size: 0.9rem;
-    }
-
-    .stat-val {
-      font-family: 'Cinzel', serif;
-      font-weight: 600;
-      font-size: 0.8rem;
-      color: var(--gold-lt);
-      letter-spacing: 0.04em;
-    }
+    .stat-key { color: var(--muted); font-size: 0.8rem; }
+    .stat-val { font-family: 'Raleway', sans-serif; font-weight: 600; color: var(--star); letter-spacing: 0.04em; }
 
     /* ── Footer ────────────────────────────────────────────────────────── */
-    .mosaic-bottom {
-      height: 8px;
-      background: repeating-linear-gradient(
-        90deg,
-        #c9a41e 0px,  #c9a41e 6px,
-        #7a6010 6px,  #7a6010 8px,
-        #e4c84a 8px,  #e4c84a 14px,
-        #7a6010 14px, #7a6010 16px,
-        #c9a41e 16px, #c9a41e 22px,
-        #906c14 22px, #906c14 24px
-      );
-      margin-top: 3rem;
-    }
-
     footer {
+      position: relative;
+      z-index: 2;
       text-align: center;
-      padding: 1.75rem 1rem 2.5rem;
-      font-family: 'EB Garamond', serif;
-      font-style: italic;
-      font-size: 0.88rem;
-      color: var(--ivory-dim);
-      opacity: 0.6;
+      padding: 2rem 1rem 3rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
     }
 
-    footer a { color: var(--ivory-dim); }
+    footer a { color: var(--muted); }
+
+    /* ── Twinkling keyframe ─────────────────────────────────────────────── */
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.8; }
+      50%       { opacity: 0.2; }
+    }
   </style>
 </head>
 <body>
 
+<!-- Fixed star canvas -->
+<canvas id="starfield"></canvas>
+
+<!-- Shooting stars -->
+<div class="shooting-stars" aria-hidden="true">
+  <div class="shoot" style="top:12%; left:10%; width:120px; animation-duration:8s;  animation-delay:2s;  transform:rotate(20deg);"></div>
+  <div class="shoot" style="top:28%; left:55%; width:80px;  animation-duration:12s; animation-delay:7s;  transform:rotate(15deg);"></div>
+  <div class="shoot" style="top: 8%; left:72%; width:150px; animation-duration:10s; animation-delay:4s;  transform:rotate(25deg);"></div>
+  <div class="shoot" style="top:18%; left:30%; width:100px; animation-duration:14s; animation-delay:11s; transform:rotate(18deg);"></div>
+</div>
+
 <!-- ── Header ── -->
 <header>
-  <div class="mosaic-top"></div>
-  <div class="gold-rule"></div>
+  <div class="nebula-layer"></div>
+  <div class="header-stars"></div>
 
   <div class="header-inner">
+    <div class="sky-scene">
 
-    <!-- Cross flanked by candles -->
-    <div class="candle-row">
-
-      <!-- Left candle -->
-      <svg width="22" height="70" viewBox="0 0 22 70" fill="none" aria-hidden="true">
-        <rect x="7" y="20" width="8" height="46" rx="1" fill="#c8a030" opacity="0.85"/>
-        <rect x="8" y="21" width="2" height="44" rx="1" fill="rgba(255,240,180,0.15)"/>
-        <rect x="9" y="18" width="4" height="4" rx="1" fill="#7a5010"/>
-        <path d="M11,18 Q9,10 11,2 Q12,0 13,2 Q15,10 11,18Z" fill="#f0a020" opacity="0.9"/>
-        <path d="M11,16 Q10,11 11,6 Q12,4 12,8 Q13,13 11,16Z" fill="#ffe060" opacity="0.85"/>
-        <ellipse cx="11" cy="66" rx="5" ry="2" fill="#8a6010" opacity="0.5"/>
+      <!-- Crescent moon -->
+      <svg class="moon-svg" width="68" height="68" viewBox="0 0 68 68" aria-hidden="true">
+        <defs>
+          <radialGradient id="mg" cx="40%" cy="38%" r="55%">
+            <stop offset="0%" stop-color="#e8f2ff"/>
+            <stop offset="100%" stop-color="#a8c4f0"/>
+          </radialGradient>
+        </defs>
+        <!-- Outer glow -->
+        <circle cx="34" cy="34" r="32" fill="rgba(180,210,255,0.04)"/>
+        <circle cx="34" cy="34" r="28" fill="rgba(180,210,255,0.06)"/>
+        <!-- Moon body -->
+        <circle cx="34" cy="34" r="24" fill="url(#mg)"/>
+        <!-- Shadow mask for crescent -->
+        <circle cx="44" cy="27" r="21" fill="#040a18"/>
+        <!-- Subtle craters -->
+        <circle cx="24" cy="38" r="3.5" fill="rgba(0,0,0,0.07)"/>
+        <circle cx="20" cy="28" r="2"   fill="rgba(0,0,0,0.05)"/>
+        <circle cx="28" cy="44" r="2"   fill="rgba(0,0,0,0.06)"/>
+        <!-- Limb glow -->
+        <circle cx="34" cy="34" r="24" fill="none" stroke="rgba(200,220,255,0.12)" stroke-width="1.5"/>
       </svg>
 
-      <!-- Orthodox three-bar cross -->
-      <svg class="ortho-cross" width="64" height="100" viewBox="0 0 64 100" fill="currentColor" aria-label="Orthodox Cross">
-        <!-- Vertical shaft -->
-        <rect x="28" y="4" width="8" height="90" rx="1"/>
-        <!-- Top bar (title plate) -->
-        <rect x="16" y="12" width="32" height="7" rx="1"/>
-        <!-- Main crossbar -->
-        <rect x="4"  y="32" width="56" height="9" rx="1"/>
-        <!-- Angled footrest -->
-        <path d="M14,76 C14,76 18,64 32,64 C46,64 50,76 50,76" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none"/>
-      </svg>
-
-      <!-- Right candle -->
-      <svg width="22" height="70" viewBox="0 0 22 70" fill="none" aria-hidden="true">
-        <rect x="7" y="20" width="8" height="46" rx="1" fill="#c8a030" opacity="0.85"/>
-        <rect x="8" y="21" width="2" height="44" rx="1" fill="rgba(255,240,180,0.15)"/>
-        <rect x="9" y="18" width="4" height="4" rx="1" fill="#7a5010"/>
-        <path d="M11,18 Q9,10 11,2 Q12,0 13,2 Q15,10 11,18Z" fill="#f0a020" opacity="0.9"/>
-        <path d="M11,16 Q10,11 11,6 Q12,4 12,8 Q13,13 11,16Z" fill="#ffe060" opacity="0.85"/>
-        <ellipse cx="11" cy="66" rx="5" ry="2" fill="#8a6010" opacity="0.5"/>
+      <!-- Crux (Southern Cross) constellation -->
+      <svg class="crux-svg" width="90" height="100" viewBox="0 0 90 100" aria-hidden="true">
+        <!-- Constellation lines -->
+        <line x1="45" y1="8"  x2="45" y2="92" stroke="rgba(106,176,240,0.2)" stroke-width="0.8"/>
+        <line x1="8"  y1="48" x2="82" y2="48" stroke="rgba(106,176,240,0.2)" stroke-width="0.8"/>
+        <!-- Stars -->
+        <circle cx="45" cy="8"  r="3"   fill="#e0ecff" filter="url(#sg)"/>
+        <circle cx="45" cy="92" r="2.5" fill="#c8dcff" filter="url(#sg)"/>
+        <circle cx="8"  cy="48" r="2"   fill="#c0d8ff" filter="url(#sg)"/>
+        <circle cx="82" cy="48" r="2"   fill="#c0d8ff" filter="url(#sg)"/>
+        <circle cx="45" cy="48" r="3.5" fill="#f0f6ff" filter="url(#sg)"/>
+        <!-- Extra small stars nearby -->
+        <circle cx="68" cy="22" r="1.2" fill="rgba(200,220,255,0.6)"/>
+        <circle cx="20" cy="70" r="1"   fill="rgba(200,220,255,0.5)"/>
+        <circle cx="72" cy="72" r="1.2" fill="rgba(200,220,255,0.55)"/>
+        <defs>
+          <filter id="sg" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="1.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
       </svg>
 
     </div>
 
-    <div class="header-arc">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
     <h1>Daily Bible Reading</h1>
     <p class="subtitle">A complete journey through Scripture in one year</p>
-    <div class="header-divider">&#10013; &nbsp; &#10013; &nbsp; &#10013;</div>
+    <div class="star-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
   </div>
 
-  <div class="gold-rule"></div>
+  <div class="horizon"></div>
+  <div class="horizon-glow"></div>
 </header>
 
 <!-- ── Content ── -->
 <div class="container">
 
-  <!-- Reading panel -->
-  <div class="icon-panel" id="readingCard"></div>
+  <div class="glass" id="readingCard"></div>
 
-  <!-- Sidebar -->
   <div class="sidebar">
-
-    <div class="icon-panel" id="calPanel">
-      <div class="panel-header">
-        <span>Liturgical Calendar</span>
-        <span>&#10013;</span>
+    <div class="glass" id="calPanel">
+      <div class="panel-top">
+        <span>Calendar</span>
+        <div class="dot"></div>
       </div>
       <div class="panel-body">
         <div class="calendar-nav">
@@ -601,18 +674,79 @@
       </div>
     </div>
 
-    <div class="icon-panel" id="statsCard"></div>
-
+    <div class="glass" id="statsCard"></div>
   </div>
 </div>
 
-<div class="mosaic-bottom"></div>
 <footer>
   Passages open in <a href="https://www.biblegateway.com" target="_blank" rel="noopener">BibleGateway</a> (NIV)
-  &ensp;&mdash;&ensp; all 1,189 chapters of Holy Scripture across 365 days
+  &nbsp;&middot;&nbsp; 1,189 chapters &nbsp;&middot;&nbsp; 365 days
 </footer>
 
 <script>
+// ── Star field canvas ─────────────────────────────────────────────────────────
+(function () {
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = document.body.scrollHeight || window.innerHeight;
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const count = Math.floor((canvas.width * canvas.height) / 3200);
+    for (let i = 0; i < count; i++) {
+      const x    = Math.random() * canvas.width;
+      const y    = Math.random() * canvas.height;
+      const r    = Math.random() < 0.88 ? Math.random() * 0.8 + 0.3 : Math.random() * 1.2 + 0.8;
+      const a    = Math.random() * 0.55 + 0.35;
+      // Occasional color tint
+      const tint = Math.random();
+      let color;
+      if      (tint < 0.06) color = `rgba(180,200,255,${a})`;  // blue-white
+      else if (tint < 0.10) color = `rgba(255,230,180,${a})`;  // warm yellow
+      else if (tint < 0.13) color = `rgba(220,180,255,${a})`;  // lavender
+      else                  color = `rgba(232,240,255,${a})`;  // white
+
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+
+      // Glow on brighter stars
+      if (r > 1.2) {
+        const g = ctx.createRadialGradient(x, y, 0, x, y, r * 4);
+        g.addColorStop(0, color);
+        g.addColorStop(1, 'transparent');
+        ctx.beginPath();
+        ctx.arc(x, y, r * 4, 0, Math.PI * 2);
+        ctx.fillStyle = g;
+        ctx.fill();
+      }
+    }
+  }
+
+  resize();
+  drawStars();
+  window.addEventListener('resize', () => { resize(); drawStars(); });
+
+  // Subtle twinkling: redraw a handful of stars periodically
+  setInterval(() => {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height;
+    const r = Math.random() * 1.2 + 0.4;
+    ctx.clearRect(x - 6, y - 6, 12, 12);
+    const a = Math.random() * 0.6 + 0.3;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(232,240,255,${a})`;
+    ctx.fill();
+  }, 80);
+})();
+
+// ── Bible books ───────────────────────────────────────────────────────────────
 const BOOKS = [
   ['Genesis',50],['Exodus',40],['Leviticus',27],['Numbers',36],['Deuteronomy',34],
   ['Joshua',24],['Judges',21],['Ruth',4],['1 Samuel',31],['2 Samuel',24],
@@ -694,7 +828,7 @@ function renderReading(date) {
   const doy = Math.min(dayOfYear(date), 365), idx = doy - 1;
   const chapters = PLAN[idx] || [], groups = groupChapters(chapters);
   const isToday = sameDay(date, today);
-  const pct = Math.min(100, Math.round((dayOfYear(today) / 365) * 100));
+  const pct    = Math.min(100, Math.round((dayOfYear(today) / 365) * 100));
   const selPct = Math.round((doy / 365) * 100);
 
   const dateLabel = date.toLocaleDateString('en-US', {
@@ -703,16 +837,19 @@ function renderReading(date) {
 
   const passagesHtml = groups.map(g => `
     <a class="passage-link" href="${bgwUrl(g)}" target="_blank" rel="noopener">
-      <span><span class="passage-book">${g.book}</span> ${g.start === g.end ? g.start : g.start + '&ndash;' + g.end}</span>
-      <span class="arrow">Read &#8594;</span>
+      <span class="p-left">
+        <span class="star-bullet">✦</span>
+        <span><span class="passage-book">${g.book}</span> ${g.start === g.end ? g.start : g.start + '&ndash;' + g.end}</span>
+      </span>
+      <span class="arrow">Read &rarr;</span>
     </a>`).join('');
 
   const verse = VERSES[idx % VERSES.length];
 
   document.getElementById('readingCard').innerHTML = `
-    <div class="panel-header">
-      <span>Daily Lection &nbsp;&middot;&nbsp; Day ${doy} of 365</span>
-      <span>${isToday ? '&#10013; Today' : '&#10013;'}</span>
+    <div class="panel-top">
+      <span>Daily Reading &nbsp;&middot;&nbsp; Day ${doy} of 365</span>
+      <div class="dot" style="${isToday ? '' : 'background:var(--muted);box-shadow:none;'}"></div>
     </div>
     <div class="panel-body">
       <div class="reading-date">${dateLabel}</div>
@@ -722,15 +859,16 @@ function renderReading(date) {
       </div>
       <div class="progress-wrap">
         <div class="progress-label">
-          <span>Year&#x2019;s reading</span><span>${pct}%</span>
+          <span>Year progress</span><span>${pct}%</span>
         </div>
         <div class="progress-bar">
           <div class="progress-fill" style="width:${isToday ? pct : selPct}%"></div>
         </div>
       </div>
-      <div class="section-label">Appointed Readings</div>
+      <div class="section-label">Readings</div>
       <div class="passages">${passagesHtml}</div>
       <div class="verse-card">
+        <div class="verse-star-row">✦ &nbsp; ✦ &nbsp; ✦</div>
         <blockquote>&ldquo;${verse.text}&rdquo;</blockquote>
         <cite>&mdash; ${verse.ref}</cite>
       </div>
@@ -764,7 +902,7 @@ function renderStats() {
   const read = PLAN.slice(0, done).reduce((s, d) => s + d.length, 0);
   const pct  = Math.min(100, Math.round((doy / 365) * 100));
   document.getElementById('statsCard').innerHTML = `
-    <div class="panel-header"><span>Reading Record</span><span>&#10013;</span></div>
+    <div class="panel-top"><span>Progress</span><div class="dot"></div></div>
     <div class="panel-body">
       <div class="stat-row"><span class="stat-key">Days completed</span><span class="stat-val">${done}</span></div>
       <div class="stat-row"><span class="stat-key">Days remaining</span><span class="stat-val">${365 - doy}</span></div>
