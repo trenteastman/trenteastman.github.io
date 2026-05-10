@@ -5,148 +5,144 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daily Bible Reading Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #bfaa78;
-      --card:     #f4edda;
-      --card-dk:  #e8dcbf;
-      --primary:  #261408;
-      --mid:      #5a3418;
-      --clay:     #9a4a20;
-      --clay-lt:  #c07038;
-      --ochre:    #b07800;
-      --ochre-lt: #d09c18;
-      --stone:    #9a9282;
-      --stone-lt: #c4bca8;
-      --text:     #1e1006;
-      --muted:    #7a6040;
-      --border:   #a09060;
-      --border-dk:#7a6030;
-      --hover:    #dfd0a8;
-      --mono:     'Courier New', Courier, monospace;
-      --shadow:   0 3px 22px rgba(26,10,0,0.22), 0 1px 5px rgba(26,10,0,0.12);
+      --bg:        #07050302;
+      --stone:     #0d0b08;
+      --panel:     #130f0a;
+      --panel-lt:  #1c1610;
+      --gold:      #c9a41e;
+      --gold-lt:   #e4c84a;
+      --gold-dk:   #7a6010;
+      --crimson:   #7a1515;
+      --crimson-lt:#a82020;
+      --blue:      #152060;
+      --ivory:     #f2e6c4;
+      --ivory-dk:  #d4c49a;
+      --ivory-dim: #9a8860;
+      --border:    #c9a41e;
+      --border-dim:#5a4810;
+      --shadow:    0 8px 40px rgba(0,0,0,0.75), 0 2px 8px rgba(0,0,0,0.5);
+      --glow:      0 0 30px rgba(201,164,30,0.12);
+      --mono:      'Courier New', monospace;
     }
 
-    /* ── Excavation-grid ground ─────────────────────────────────────────── */
+    /* ── Stone interior, candlelit ─────────────────────────────────────── */
     body {
-      font-family: 'Lora', serif;
-      background-color: var(--bg);
+      font-family: 'EB Garamond', serif;
+      background-color: var(--stone);
       background-image:
-        linear-gradient(rgba(0,0,0,0.09) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.09) 1px, transparent 1px),
-        radial-gradient(ellipse at 20% 35%, rgba(150,90,20,0.28) 0%, transparent 52%),
-        radial-gradient(ellipse at 80% 68%, rgba(130,80,10,0.22) 0%, transparent 48%),
-        radial-gradient(ellipse at 55% 15%, rgba(180,140,60,0.15) 0%, transparent 40%);
-      background-size: 64px 64px, 64px 64px, 100% 100%, 100% 100%, 100% 100%;
-      color: var(--text);
+        /* Subtle mosaic tile grid */
+        linear-gradient(rgba(201,164,30,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,164,30,0.04) 1px, transparent 1px),
+        /* Candlelight warmth pools */
+        radial-gradient(ellipse at 25% 55%, rgba(180,100,10,0.07) 0%, transparent 45%),
+        radial-gradient(ellipse at 75% 35%, rgba(180,100,10,0.06) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 80%, rgba(140,80,5,0.08)  0%, transparent 50%);
+      background-size: 32px 32px, 32px 32px, 100% 100%, 100% 100%, 100% 100%;
+      color: var(--ivory);
       min-height: 100vh;
-      line-height: 1.65;
+      line-height: 1.7;
     }
 
-    /* ── Header: stratified soil profile ───────────────────────────────── */
+    /* ── Header: narthex at candlelight ────────────────────────────────── */
     header {
       position: relative;
       overflow: hidden;
-      background: linear-gradient(180deg,
-        #080402  0%,
-        #1c0e06  5%,
-        #2e1a0a  11%,
-        #48280e  18%,
-        #6a3e1a  26%,
-        #8a5a2a  36%,
-        #a87840  47%,
-        #c09858  60%,
-        #d0ac6c  73%,
-        #d8b870  84%,
-        #cdb06a  100%
-      );
       text-align: center;
-      padding: 3rem 1.5rem 0;
+      background:
+        radial-gradient(ellipse at 50% 140%, rgba(210,130,20,0.32) 0%, transparent 58%),
+        radial-gradient(ellipse at 18% 90%,  rgba(190,110,10,0.14) 0%, transparent 38%),
+        radial-gradient(ellipse at 82% 90%,  rgba(190,110,10,0.14) 0%, transparent 38%),
+        linear-gradient(180deg, #060402 0%, #0c0906 35%, #130f08 70%, #1a140a 100%);
+      padding: 0;
     }
 
-    /* Strata lines across the header */
-    .strata-lines {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(transparent 4.8%,  rgba(255,255,255,0.04) 5%,  transparent 5.2%),
-        linear-gradient(transparent 10.8%, rgba(255,220,150,0.06) 11%, transparent 11.2%),
-        linear-gradient(transparent 19.8%, rgba(255,255,255,0.05) 20%, transparent 20.2%),
-        linear-gradient(transparent 31.8%, rgba(255,220,150,0.07) 32%, transparent 32.2%),
-        linear-gradient(transparent 46.8%, rgba(255,255,255,0.06) 47%, transparent 47.2%),
-        linear-gradient(transparent 63.8%, rgba(255,220,150,0.05) 64%, transparent 64.2%);
+    /* Byzantine mosaic border strip at top */
+    .mosaic-top {
+      height: 10px;
+      background: repeating-linear-gradient(
+        90deg,
+        #c9a41e 0px,  #c9a41e 6px,
+        #7a6010 6px,  #7a6010 8px,
+        #e4c84a 8px,  #e4c84a 14px,
+        #7a6010 14px, #7a6010 16px,
+        #c9a41e 16px, #c9a41e 22px,
+        #906c14 22px, #906c14 24px
+      );
     }
 
-    /* Excavation grid overlay */
-    .header-grid {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(0,0,0,0.12) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.12) 1px, transparent 1px);
-      background-size: 64px 64px;
-    }
+    /* Thin gold rule below the mosaic strip */
+    .gold-rule { height: 1px; background: var(--gold); opacity: 0.5; }
 
     .header-inner {
+      padding: 2.8rem 1.5rem 2.4rem;
       position: relative;
       z-index: 2;
-      padding-bottom: 2rem;
     }
 
-    /* "Site label" badge */
-    .site-label {
-      display: inline-block;
+    /* Candle pair SVG */
+    .candle-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 3.5rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .cross-wrap { flex-shrink: 0; }
+
+    /* Orthodox triple-bar cross */
+    .ortho-cross {
+      color: var(--gold);
+      filter: drop-shadow(0 0 10px rgba(201,164,30,0.5));
+    }
+
+    /* Ornamental arc above title */
+    .header-arc {
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      color: rgba(201,164,30,0.45);
       font-family: var(--mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: rgba(240,220,170,0.5);
-      margin-bottom: 1.1rem;
+      margin-bottom: 0.8rem;
     }
-
-    /* Oil lamp SVG */
-    .lamp { margin: 0 auto 1.1rem; display: block; }
 
     header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.6rem, 4.2vw, 2.5rem);
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
       font-weight: 700;
-      color: #f2e4bc;
-      letter-spacing: 0.05em;
-      text-shadow: 2px 2px 6px rgba(0,0,0,0.55), 0 0 28px rgba(200,160,50,0.25);
-      margin-bottom: 0.4rem;
+      color: var(--ivory);
+      letter-spacing: 0.1em;
+      text-shadow:
+        0 0 30px rgba(201,164,30,0.4),
+        0 2px 6px rgba(0,0,0,0.8);
+      margin-bottom: 0.45rem;
     }
 
     header .subtitle {
-      font-family: 'Lora', serif;
+      font-family: 'EB Garamond', serif;
       font-style: italic;
-      font-size: 0.9rem;
-      color: rgba(242,228,188,0.65);
-      margin-bottom: 0.9rem;
+      font-size: 1rem;
+      color: var(--ivory-dk);
+      opacity: 0.75;
+      margin-bottom: 1.1rem;
     }
 
     .header-divider {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.5em;
-      color: rgba(200,160,50,0.55);
-      margin-bottom: 0;
+      color: var(--gold);
+      font-size: 1rem;
+      letter-spacing: 0.6em;
+      opacity: 0.55;
     }
 
-    /* Stone edge at base of header */
-    .header-stone-edge {
-      position: relative;
-      z-index: 2;
-      display: block;
-      width: 100%;
-    }
+    /* Gold rule + mosaic at bottom of header */
+    .header-bottom { position: relative; }
 
-    /* ── Main layout ─────────────────────────────────────────────────────── */
+    /* ── Layout ────────────────────────────────────────────────────────── */
     .container {
       max-width: 1000px;
       margin: 0 auto;
@@ -161,45 +157,64 @@
       .container { grid-template-columns: 1fr; padding: 1rem; }
     }
 
-    /* ── Field Record card ───────────────────────────────────────────────── */
-    .reading-card {
-      background: var(--card);
-      background-image:
-        linear-gradient(rgba(120,90,30,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(120,90,30,0.04) 1px, transparent 1px);
-      background-size: 100% 28px, 28px 100%;
+    /* ── Icon-panel cards ──────────────────────────────────────────────── */
+    .icon-panel {
+      background: var(--panel);
+      border: 1px solid var(--gold-dk);
       border-radius: 2px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
+      box-shadow: var(--shadow), var(--glow);
+      position: relative;
+      overflow: visible;
     }
 
-    /* "Locus tag" strip across the top of the card */
-    .locus-strip {
-      background: var(--primary);
-      color: rgba(242,228,188,0.85);
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      padding: 0.45rem 1.25rem;
+    /* Double-border icon frame effect */
+    .icon-panel::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(201,164,30,0.2);
+      border-radius: 1px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Gold header strip on each panel */
+    .panel-header {
+      background: linear-gradient(90deg, var(--gold-dk), #c9a41e 30%, #e4c84a 50%, #c9a41e 70%, var(--gold-dk));
+      padding: 0.5rem 1.25rem;
       display: flex;
       justify-content: space-between;
+      align-items: center;
     }
 
-    .card-body { padding: 1.6rem 1.75rem; }
+    .panel-header span {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
 
+    .panel-body {
+      padding: 1.6rem 1.75rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Reading content ───────────────────────────────────────────────── */
     .reading-date {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.35rem;
-      color: var(--primary);
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--gold-lt);
+      letter-spacing: 0.04em;
       margin-bottom: 0.2rem;
-      line-height: 1.3;
     }
 
     .reading-meta {
       font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--muted);
+      font-size: 0.67rem;
+      color: var(--ivory-dim);
       margin-bottom: 1.4rem;
       display: flex;
       align-items: center;
@@ -208,18 +223,16 @@
     }
 
     .badge-today {
-      background: var(--clay);
-      color: #faf0da;
+      background: var(--crimson);
+      color: var(--ivory);
       font-size: 0.58rem;
-      font-weight: 600;
-      font-family: var(--mono);
+      font-family: 'Cinzel', serif;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      padding: 0.15rem 0.55rem;
-      border-radius: 1px;
+      padding: 0.12rem 0.5rem;
+      border: 1px solid rgba(201,164,30,0.3);
     }
 
-    /* Stratigraphic progress bar */
     .progress-wrap { margin-bottom: 1.5rem; }
 
     .progress-label {
@@ -227,63 +240,36 @@
       justify-content: space-between;
       font-family: var(--mono);
       font-size: 0.62rem;
-      color: var(--muted);
+      color: var(--ivory-dim);
       margin-bottom: 0.4rem;
       letter-spacing: 0.06em;
     }
 
     .progress-bar {
-      height: 14px;
-      background: var(--card-dk);
-      border: 1px solid var(--border-dk);
-      border-radius: 1px;
+      height: 8px;
+      background: #0a0806;
+      border: 1px solid var(--border-dim);
       overflow: hidden;
-      position: relative;
-    }
-
-    /* Strata layers visible behind the fill */
-    .progress-bar::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        90deg,
-        transparent 0px, transparent 18px,
-        rgba(120,80,20,0.08) 18px, rgba(120,80,20,0.08) 20px
-      );
     }
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg,
-        #3a1c08 0%, #6a3a18 25%, #9a5c28 50%, #b87830 75%, var(--ochre-lt) 100%
-      );
+      background: linear-gradient(90deg, var(--crimson) 0%, #b87a10 50%, var(--gold-lt) 100%);
       transition: width 0.4s ease;
-      position: relative;
-    }
-
-    /* "Trowel mark" texture on the fill */
-    .progress-fill::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        135deg,
-        rgba(255,255,255,0.07) 0px, rgba(255,255,255,0.07) 3px,
-        transparent 3px, transparent 8px
-      );
+      box-shadow: 0 0 8px rgba(201,164,30,0.4);
     }
 
     .section-label {
-      font-family: var(--mono);
+      font-family: 'Cinzel', serif;
       font-size: 0.6rem;
       text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: var(--mid);
-      margin-bottom: 0.85rem;
+      letter-spacing: 0.22em;
+      color: var(--gold);
+      margin-bottom: 0.9rem;
       display: flex;
       align-items: center;
       gap: 0.6rem;
+      opacity: 0.8;
     }
 
     .section-label::before,
@@ -291,10 +277,10 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: var(--border);
+      background: linear-gradient(90deg, transparent, var(--gold-dk), transparent);
     }
 
-    /* ── Finds / Passage links ────────────────────────────────────────────── */
+    /* ── Passage links ─────────────────────────────────────────────────── */
     .passages {
       display: flex;
       flex-direction: column;
@@ -306,114 +292,89 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.8rem 1rem;
-      background: #faf4e2;
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--clay);
-      border-radius: 1px;
+      padding: 0.85rem 1.05rem;
+      background: #0d0a06;
+      border: 1px solid var(--border-dim);
+      border-left: 2px solid var(--gold-dk);
       text-decoration: none;
-      color: var(--text);
-      font-family: 'Lora', serif;
-      font-size: 1rem;
-      transition: background 0.14s, border-color 0.14s;
+      color: var(--ivory);
+      font-family: 'EB Garamond', serif;
+      font-size: 1.05rem;
+      transition: background 0.15s, border-color 0.15s;
     }
 
     .passage-link:hover {
-      background: var(--hover);
-      border-left-color: var(--ochre);
+      background: #1c1610;
+      border-left-color: var(--gold);
+      color: var(--gold-lt);
     }
 
-    .p-left { display: flex; align-items: baseline; gap: 0.6rem; }
+    .passage-link:hover .arrow { color: var(--gold-lt); }
 
-    .cat-num {
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      color: var(--muted);
-      letter-spacing: 0.05em;
-      flex-shrink: 0;
-      opacity: 0.7;
-    }
-
-    .passage-book { font-weight: 600; color: var(--primary); }
+    .passage-book { font-weight: 500; }
 
     .passage-link .arrow {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--clay);
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      color: var(--ivory-dim);
       flex-shrink: 0;
-      margin-left: 0.5rem;
-      letter-spacing: 0.05em;
+      margin-left: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
-    /* ── Verse / Field note box ──────────────────────────────────────────── */
+    /* ── Verse / Epistle reading ───────────────────────────────────────── */
     .verse-card {
-      background: var(--card-dk);
-      border: 1px solid var(--border-dk);
-      border-radius: 1px;
-      padding: 1.3rem 1.5rem;
+      background: linear-gradient(135deg, #100c06 0%, var(--panel-lt) 100%);
+      border: 1px solid var(--border-dim);
+      padding: 1.4rem 1.5rem;
       position: relative;
     }
 
-    .verse-card::before {
-      content: 'FIELD NOTE';
-      position: absolute;
-      top: -0.6rem;
-      left: 1rem;
-      background: var(--card-dk);
-      padding: 0 0.4rem;
-      font-family: var(--mono);
+    .verse-card::before,
+    .verse-card::after {
+      font-family: 'Cinzel', serif;
       font-size: 0.52rem;
       letter-spacing: 0.2em;
-      color: var(--muted);
+      color: var(--gold);
+      opacity: 0.6;
+      position: absolute;
+    }
+
+    .verse-card::before {
+      content: '✦  SCRIPTURE  ✦';
+      top: -0.55rem;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      background: var(--panel);
+      padding: 0 0.6rem;
     }
 
     .verse-card blockquote {
-      font-family: 'Lora', serif;
+      font-family: 'EB Garamond', serif;
       font-style: italic;
-      font-size: 0.96rem;
-      line-height: 1.8;
-      color: var(--mid);
-      margin-bottom: 0.65rem;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--ivory-dk);
       text-align: center;
+      margin-bottom: 0.75rem;
     }
 
     .verse-card cite {
       display: block;
       text-align: center;
-      font-family: var(--mono);
+      font-family: 'Cinzel', serif;
       font-size: 0.6rem;
-      letter-spacing: 0.12em;
-      color: var(--muted);
+      letter-spacing: 0.15em;
+      color: var(--gold);
       font-style: normal;
+      opacity: 0.7;
       text-transform: uppercase;
     }
 
-    /* ── Sidebar ─────────────────────────────────────────────────────────── */
+    /* ── Sidebar ───────────────────────────────────────────────────────── */
     .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
-
-    .cal-card,
-    .stat-card {
-      background: var(--card);
-      background-image:
-        linear-gradient(rgba(120,90,30,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(120,90,30,0.04) 1px, transparent 1px);
-      background-size: 100% 28px, 28px 100%;
-      border-radius: 2px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .card-tag {
-      background: var(--mid);
-      color: rgba(242,228,188,0.8);
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      padding: 0.4rem 1rem;
-    }
-
-    .card-inner { padding: 1.1rem 1.1rem; }
 
     /* Calendar */
     .calendar-nav {
@@ -424,9 +385,8 @@
     }
 
     .cal-btn {
-      background: var(--card-dk);
-      border: 1px solid var(--border);
-      border-radius: 1px;
+      background: #0d0a06;
+      border: 1px solid var(--border-dim);
       width: 28px;
       height: 28px;
       cursor: pointer;
@@ -434,18 +394,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--mid);
-      transition: background 0.14s;
+      color: var(--ivory-dim);
+      transition: border-color 0.14s, color 0.14s;
       line-height: 1;
     }
 
-    .cal-btn:hover { background: var(--hover); border-color: var(--ochre); }
+    .cal-btn:hover { border-color: var(--gold); color: var(--gold); }
 
     .calendar-month-label {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: var(--primary);
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--gold-lt);
+      letter-spacing: 0.06em;
     }
 
     .calendar-grid {
@@ -456,13 +417,14 @@
 
     .cal-dow {
       text-align: center;
-      font-family: var(--mono);
-      font-size: 0.52rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.5rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--muted);
+      letter-spacing: 0.06em;
+      color: var(--ivory-dim);
       padding: 0.35rem 0;
+      opacity: 0.6;
     }
 
     .cal-day {
@@ -471,17 +433,17 @@
       align-items: center;
       justify-content: center;
       font-family: var(--mono);
-      font-size: 0.72rem;
-      border-radius: 1px;
+      font-size: 0.7rem;
       cursor: pointer;
-      transition: background 0.12s;
+      transition: background 0.12s, color 0.12s;
       position: relative;
       user-select: none;
+      color: var(--ivory-dk);
     }
 
-    .cal-day.empty     { cursor: default; }
-    .cal-day:not(.empty):hover { background: var(--hover); }
-    .cal-day.past      { color: var(--muted); }
+    .cal-day.empty   { cursor: default; }
+    .cal-day:not(.empty):hover { background: #1c1610; color: var(--gold-lt); }
+    .cal-day.past    { color: var(--ivory-dim); opacity: 0.5; }
 
     .cal-day.completed::after {
       content: '';
@@ -492,119 +454,144 @@
       width: 3px;
       height: 3px;
       border-radius: 50%;
-      background: var(--ochre);
+      background: var(--gold-dk);
     }
 
     .cal-day.is-today {
-      background: var(--primary);
-      color: #f2e4bc;
+      background: var(--crimson);
+      color: var(--ivory);
       font-weight: 700;
     }
 
-    .cal-day.is-today::after      { background: rgba(242,228,188,0.4); }
-    .cal-day.is-selected:not(.is-today) { background: var(--clay); color: #faf0da; }
-    .cal-day.is-selected::after   { background: rgba(250,240,218,0.4); }
+    .cal-day.is-today::after      { background: rgba(242,230,196,0.4); }
+    .cal-day.is-selected:not(.is-today) { background: var(--gold-dk); color: var(--ivory); }
+    .cal-day.is-selected::after   { background: rgba(242,230,196,0.4); }
 
     /* Stats */
     .stat-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.4rem 0;
-      border-bottom: 1px solid rgba(160,144,96,0.3);
-      font-size: 0.78rem;
+      padding: 0.45rem 0;
+      border-bottom: 1px solid rgba(201,164,30,0.1);
+      font-size: 0.88rem;
     }
 
     .stat-row:last-child { border-bottom: none; }
 
     .stat-key {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      text-transform: uppercase;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      color: var(--ivory-dim);
+      font-size: 0.9rem;
     }
 
     .stat-val {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 0.88rem;
-      color: var(--primary);
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--gold-lt);
+      letter-spacing: 0.04em;
     }
 
-    /* ── Footer ──────────────────────────────────────────────────────────── */
+    /* ── Footer ────────────────────────────────────────────────────────── */
+    .mosaic-bottom {
+      height: 8px;
+      background: repeating-linear-gradient(
+        90deg,
+        #c9a41e 0px,  #c9a41e 6px,
+        #7a6010 6px,  #7a6010 8px,
+        #e4c84a 8px,  #e4c84a 14px,
+        #7a6010 14px, #7a6010 16px,
+        #c9a41e 16px, #c9a41e 22px,
+        #906c14 22px, #906c14 24px
+      );
+      margin-top: 3rem;
+    }
+
     footer {
       text-align: center;
-      padding: 2rem 1rem 3rem;
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.08em;
-      color: var(--muted);
+      padding: 1.75rem 1rem 2.5rem;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 0.88rem;
+      color: var(--ivory-dim);
+      opacity: 0.6;
     }
 
-    footer a { color: var(--mid); }
+    footer a { color: var(--ivory-dim); }
   </style>
 </head>
 <body>
 
 <!-- ── Header ── -->
 <header>
-  <div class="strata-lines"></div>
-  <div class="header-grid"></div>
+  <div class="mosaic-top"></div>
+  <div class="gold-rule"></div>
 
   <div class="header-inner">
-    <div class="site-label">Site: Biblical Scripture &nbsp;·&nbsp; Region: Ancient Near East &nbsp;·&nbsp; Period: Iron Age II</div>
 
-    <!-- Ancient oil lamp SVG -->
-    <svg class="lamp" width="90" height="60" viewBox="0 0 110 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- Lamp body -->
-      <path d="M18,58 Q12,42 18,30 Q30,12 55,14 Q74,16 84,30 Q92,42 86,56 Q78,66 58,64 Q34,68 18,58Z"
-        fill="#c06830" stroke="#7a3a10" stroke-width="1.5"/>
-      <!-- Spout -->
-      <path d="M84,34 Q98,26 104,30 Q108,38 100,44 Q94,48 84,42Z"
-        fill="#c06830" stroke="#7a3a10" stroke-width="1.5"/>
-      <!-- Handle loop -->
-      <path d="M22,44 Q8,30 16,18 Q26,8 36,18"
-        fill="none" stroke="#7a3a10" stroke-width="2.5" stroke-linecap="round"/>
-      <!-- Fill hole -->
-      <ellipse cx="52" cy="32" rx="9" ry="5.5" fill="#7a3a10" opacity="0.35"/>
-      <!-- Clay texture marks -->
-      <path d="M35,20 Q45,16 55,17" stroke="#7a3a10" stroke-width="0.8" opacity="0.3" fill="none"/>
-      <path d="M30,30 Q40,26 50,27" stroke="#7a3a10" stroke-width="0.8" opacity="0.25" fill="none"/>
-      <!-- Flame outer -->
-      <path d="M101,28 Q96,16 101,6 Q104,0 106,6 Q111,16 107,27Z"
-        fill="#d48c0a" opacity="0.9"/>
-      <!-- Flame inner -->
-      <path d="M102,25 Q100,17 102,11 Q104,7 105,12 Q107,20 105,25Z"
-        fill="#f0d040" opacity="0.85"/>
-    </svg>
+    <!-- Cross flanked by candles -->
+    <div class="candle-row">
 
+      <!-- Left candle -->
+      <svg width="22" height="70" viewBox="0 0 22 70" fill="none" aria-hidden="true">
+        <rect x="7" y="20" width="8" height="46" rx="1" fill="#c8a030" opacity="0.85"/>
+        <rect x="8" y="21" width="2" height="44" rx="1" fill="rgba(255,240,180,0.15)"/>
+        <rect x="9" y="18" width="4" height="4" rx="1" fill="#7a5010"/>
+        <path d="M11,18 Q9,10 11,2 Q12,0 13,2 Q15,10 11,18Z" fill="#f0a020" opacity="0.9"/>
+        <path d="M11,16 Q10,11 11,6 Q12,4 12,8 Q13,13 11,16Z" fill="#ffe060" opacity="0.85"/>
+        <ellipse cx="11" cy="66" rx="5" ry="2" fill="#8a6010" opacity="0.5"/>
+      </svg>
+
+      <!-- Orthodox three-bar cross -->
+      <svg class="ortho-cross" width="64" height="100" viewBox="0 0 64 100" fill="currentColor" aria-label="Orthodox Cross">
+        <!-- Vertical shaft -->
+        <rect x="28" y="4" width="8" height="90" rx="1"/>
+        <!-- Top bar (title plate) -->
+        <rect x="16" y="12" width="32" height="7" rx="1"/>
+        <!-- Main crossbar -->
+        <rect x="4"  y="32" width="56" height="9" rx="1"/>
+        <!-- Angled footrest -->
+        <path d="M14,76 C14,76 18,64 32,64 C46,64 50,76 50,76" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none"/>
+      </svg>
+
+      <!-- Right candle -->
+      <svg width="22" height="70" viewBox="0 0 22 70" fill="none" aria-hidden="true">
+        <rect x="7" y="20" width="8" height="46" rx="1" fill="#c8a030" opacity="0.85"/>
+        <rect x="8" y="21" width="2" height="44" rx="1" fill="rgba(255,240,180,0.15)"/>
+        <rect x="9" y="18" width="4" height="4" rx="1" fill="#7a5010"/>
+        <path d="M11,18 Q9,10 11,2 Q12,0 13,2 Q15,10 11,18Z" fill="#f0a020" opacity="0.9"/>
+        <path d="M11,16 Q10,11 11,6 Q12,4 12,8 Q13,13 11,16Z" fill="#ffe060" opacity="0.85"/>
+        <ellipse cx="11" cy="66" rx="5" ry="2" fill="#8a6010" opacity="0.5"/>
+      </svg>
+
+    </div>
+
+    <div class="header-arc">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
     <h1>Daily Bible Reading</h1>
     <p class="subtitle">A complete journey through Scripture in one year</p>
-    <div class="header-divider">- - - &#9670; - - -</div>
+    <div class="header-divider">&#10013; &nbsp; &#10013; &nbsp; &#10013;</div>
   </div>
 
-  <!-- SVG "excavated stone" edge transition -->
-  <svg class="header-stone-edge" viewBox="0 0 1440 36" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <path d="M0,36 L0,18 C60,8 110,20 180,14 C240,8 300,22 380,16 C450,10 510,24 590,18 C660,12 720,26 800,18 C870,10 930,24 1010,16 C1080,8 1150,22 1230,16 C1290,10 1360,24 1440,18 L1440,36 Z"
-      fill="#bfaa78"/>
-    <path d="M0,36 L0,26 C80,20 140,30 220,24 C300,18 360,30 440,26 C510,22 570,32 650,28 C720,24 790,34 870,28 C940,22 1010,32 1090,26 C1160,20 1240,30 1320,26 C1370,23 1410,30 1440,28 L1440,36 Z"
-      fill="#bfaa78" opacity="0.7"/>
-  </svg>
+  <div class="gold-rule"></div>
 </header>
 
 <!-- ── Content ── -->
 <div class="container">
 
-  <!-- Reading / Field Record -->
-  <div class="reading-card" id="readingCard"></div>
+  <!-- Reading panel -->
+  <div class="icon-panel" id="readingCard"></div>
 
   <!-- Sidebar -->
   <div class="sidebar">
 
-    <div class="cal-card">
-      <div class="card-tag">Excavation Calendar</div>
-      <div class="card-inner">
+    <div class="icon-panel" id="calPanel">
+      <div class="panel-header">
+        <span>Liturgical Calendar</span>
+        <span>&#10013;</span>
+      </div>
+      <div class="panel-body">
         <div class="calendar-nav">
           <button class="cal-btn" id="prevMonth">&#8249;</button>
           <span class="calendar-month-label" id="calLabel"></span>
@@ -614,18 +601,18 @@
       </div>
     </div>
 
-    <div class="stat-card" id="statsCard"></div>
+    <div class="icon-panel" id="statsCard"></div>
 
   </div>
 </div>
 
+<div class="mosaic-bottom"></div>
 <footer>
-  Passages open in <a href="https://www.biblegateway.com" target="_blank" rel="noopener">BibleGateway.com</a> (NIV)
-  &nbsp;·&nbsp; 1,189 chapters &nbsp;·&nbsp; 365 days
+  Passages open in <a href="https://www.biblegateway.com" target="_blank" rel="noopener">BibleGateway</a> (NIV)
+  &ensp;&mdash;&ensp; all 1,189 chapters of Holy Scripture across 365 days
 </footer>
 
 <script>
-// ── Bible books ──────────────────────────────────────────────────────────────
 const BOOKS = [
   ['Genesis',50],['Exodus',40],['Leviticus',27],['Numbers',36],['Deuteronomy',34],
   ['Joshua',24],['Judges',21],['Ruth',4],['1 Samuel',31],['2 Samuel',24],
@@ -663,13 +650,10 @@ function buildPlan() {
   const chapters = [];
   for (const [book, count] of BOOKS)
     for (let ch = 1; ch <= count; ch++) chapters.push([book, ch]);
-  const plan = [];
-  const total = chapters.length;
-  let idx = 0;
+  const plan = []; const total = chapters.length; let idx = 0;
   for (let day = 0; day < 365; day++) {
     const count = Math.round((total - idx) / (365 - day));
-    plan.push(chapters.slice(idx, idx + count));
-    idx += count;
+    plan.push(chapters.slice(idx, idx + count)); idx += count;
   }
   return plan;
 }
@@ -677,15 +661,13 @@ function buildPlan() {
 const PLAN = buildPlan();
 
 function dayOfYear(date) {
-  const jan1 = new Date(date.getFullYear(), 0, 1);
-  return Math.ceil((date - jan1) / 86400000) + 1;
+  return Math.ceil((date - new Date(date.getFullYear(), 0, 1)) / 86400000) + 1;
 }
 
 function groupChapters(chapters) {
-  const groups = [];
-  let cur = null;
+  const groups = []; let cur = null;
   for (const [book, ch] of chapters) {
-    if (cur && cur.book === book && ch === cur.end + 1) { cur.end = ch; }
+    if (cur && cur.book === book && ch === cur.end + 1) cur.end = ch;
     else { if (cur) groups.push(cur); cur = { book, start: ch, end: ch }; }
   }
   if (cur) groups.push(cur);
@@ -698,66 +680,55 @@ function bgwUrl(g) {
 }
 
 function sameDay(a, b) {
-  return a.getFullYear() === b.getFullYear() &&
-         a.getMonth()    === b.getMonth()    &&
-         a.getDate()     === b.getDate();
+  return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
 }
 
-const MONTH_NAMES = ['January','February','March','April','May','June',
-                     'July','August','September','October','November','December'];
+const MONTHS = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
 const DOW = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 
 const today = new Date(); today.setHours(0,0,0,0);
-let selected = new Date(today);
-let calYear  = today.getFullYear();
-let calMonth = today.getMonth();
+let selected = new Date(today), calYear = today.getFullYear(), calMonth = today.getMonth();
 
 function renderReading(date) {
-  const doy      = Math.min(dayOfYear(date), 365);
-  const idx      = doy - 1;
-  const chapters = PLAN[idx] || [];
-  const groups   = groupChapters(chapters);
-  const isToday  = sameDay(date, today);
-  const todayDoy = dayOfYear(today);
-  const pct      = Math.min(100, Math.round((todayDoy / 365) * 100));
-  const selPct   = Math.round((doy / 365) * 100);
+  const doy = Math.min(dayOfYear(date), 365), idx = doy - 1;
+  const chapters = PLAN[idx] || [], groups = groupChapters(chapters);
+  const isToday = sameDay(date, today);
+  const pct = Math.min(100, Math.round((dayOfYear(today) / 365) * 100));
+  const selPct = Math.round((doy / 365) * 100);
 
   const dateLabel = date.toLocaleDateString('en-US', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
   });
 
-  const passagesHtml = groups.map((g, i) => `
+  const passagesHtml = groups.map(g => `
     <a class="passage-link" href="${bgwUrl(g)}" target="_blank" rel="noopener">
-      <span class="p-left">
-        <span class="cat-num">CAT.${String(idx + 1).padStart(3,'0')}.${String(i+1).padStart(2,'0')}</span>
-        <span><span class="passage-book">${g.book}</span> ${g.start === g.end ? g.start : g.start + '&ndash;' + g.end}</span>
-      </span>
-      <span class="arrow">OPEN &rarr;</span>
+      <span><span class="passage-book">${g.book}</span> ${g.start === g.end ? g.start : g.start + '&ndash;' + g.end}</span>
+      <span class="arrow">Read &#8594;</span>
     </a>`).join('');
 
   const verse = VERSES[idx % VERSES.length];
 
   document.getElementById('readingCard').innerHTML = `
-    <div class="locus-strip">
-      <span>Field Record &nbsp;&#183;&nbsp; Locus ${String(doy).padStart(3,'0')}</span>
-      <span>${isToday ? '&#9670; Active' : 'Archived'}</span>
+    <div class="panel-header">
+      <span>Daily Lection &nbsp;&middot;&nbsp; Day ${doy} of 365</span>
+      <span>${isToday ? '&#10013; Today' : '&#10013;'}</span>
     </div>
-    <div class="card-body">
+    <div class="panel-body">
       <div class="reading-date">${dateLabel}</div>
       <div class="reading-meta">
-        Day ${doy} of 365 &nbsp;·&nbsp; ${chapters.length} chapter${chapters.length !== 1 ? 's' : ''}
+        ${chapters.length} chapter${chapters.length !== 1 ? 's' : ''}
         ${isToday ? '<span class="badge-today">Today</span>' : ''}
       </div>
       <div class="progress-wrap">
         <div class="progress-label">
-          <span>Stratigraphic progress</span>
-          <span>${pct}%</span>
+          <span>Year&#x2019;s reading</span><span>${pct}%</span>
         </div>
         <div class="progress-bar">
           <div class="progress-fill" style="width:${isToday ? pct : selPct}%"></div>
         </div>
       </div>
-      <div class="section-label">Finds Register</div>
+      <div class="section-label">Appointed Readings</div>
       <div class="passages">${passagesHtml}</div>
       <div class="verse-card">
         <blockquote>&ldquo;${verse.text}&rdquo;</blockquote>
@@ -767,66 +738,50 @@ function renderReading(date) {
 }
 
 function renderCalendar() {
-  document.getElementById('calLabel').textContent = `${MONTH_NAMES[calMonth]} ${calYear}`;
-  const firstDow    = new Date(calYear, calMonth, 1).getDay();
+  document.getElementById('calLabel').textContent = `${MONTHS[calMonth]} ${calYear}`;
+  const firstDow = new Date(calYear, calMonth, 1).getDay();
   const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-
   let html = DOW.map(d => `<div class="cal-dow">${d}</div>`).join('');
   for (let i = 0; i < firstDow; i++) html += '<div class="cal-day empty"></div>';
-
   for (let d = 1; d <= daysInMonth; d++) {
     const cell = new Date(calYear, calMonth, d); cell.setHours(0,0,0,0);
-    const isT   = sameDay(cell, today);
-    const isS   = sameDay(cell, selected);
-    const isPast = cell < today && !isT;
+    const isT = sameDay(cell, today), isS = sameDay(cell, selected), isPast = cell < today && !isT;
     let cls = 'cal-day';
-    if (isT)    cls += ' is-today';
-    if (isS)    cls += ' is-selected';
-    if (isPast) cls += ' past completed';
+    if (isT) cls += ' is-today'; if (isS) cls += ' is-selected'; if (isPast) cls += ' past completed';
     html += `<div class="${cls}" data-ts="${cell.getTime()}">${d}</div>`;
   }
-
   const grid = document.getElementById('calGrid');
   grid.innerHTML = html;
   grid.querySelectorAll('.cal-day:not(.empty)').forEach(el => {
     el.addEventListener('click', () => {
-      selected = new Date(+el.dataset.ts);
-      renderReading(selected);
-      renderCalendar();
+      selected = new Date(+el.dataset.ts); renderReading(selected); renderCalendar();
     });
   });
 }
 
 function renderStats() {
-  const todayDoy      = dayOfYear(today);
-  const completedDays = todayDoy - 1;
-  const chaptersRead  = PLAN.slice(0, completedDays).reduce((s, d) => s + d.length, 0);
-  const pct           = Math.min(100, Math.round((todayDoy / 365) * 100));
-
+  const doy = dayOfYear(today), done = doy - 1;
+  const read = PLAN.slice(0, done).reduce((s, d) => s + d.length, 0);
+  const pct  = Math.min(100, Math.round((doy / 365) * 100));
   document.getElementById('statsCard').innerHTML = `
-    <div class="card-tag">Site Report</div>
-    <div class="card-inner">
-      <div class="stat-row"><span class="stat-key">Days logged</span><span class="stat-val">${completedDays}</span></div>
-      <div class="stat-row"><span class="stat-key">Days remaining</span><span class="stat-val">${365 - todayDoy}</span></div>
-      <div class="stat-row"><span class="stat-key">Chapters recovered</span><span class="stat-val">${chaptersRead.toLocaleString()}</span></div>
+    <div class="panel-header"><span>Reading Record</span><span>&#10013;</span></div>
+    <div class="panel-body">
+      <div class="stat-row"><span class="stat-key">Days completed</span><span class="stat-val">${done}</span></div>
+      <div class="stat-row"><span class="stat-key">Days remaining</span><span class="stat-val">${365 - doy}</span></div>
+      <div class="stat-row"><span class="stat-key">Chapters read</span><span class="stat-val">${read.toLocaleString()}</span></div>
       <div class="stat-row"><span class="stat-key">Total chapters</span><span class="stat-val">1,189</span></div>
-      <div class="stat-row"><span class="stat-key">Excavation complete</span><span class="stat-val">${pct}%</span></div>
+      <div class="stat-row"><span class="stat-key">Year complete</span><span class="stat-val">${pct}%</span></div>
     </div>`;
 }
 
 document.getElementById('prevMonth').addEventListener('click', () => {
-  if (--calMonth < 0) { calMonth = 11; calYear--; }
-  renderCalendar();
+  if (--calMonth < 0) { calMonth = 11; calYear--; } renderCalendar();
 });
-
 document.getElementById('nextMonth').addEventListener('click', () => {
-  if (++calMonth > 11) { calMonth = 0; calYear++; }
-  renderCalendar();
+  if (++calMonth > 11) { calMonth = 0; calYear++; } renderCalendar();
 });
 
-renderReading(selected);
-renderCalendar();
-renderStats();
+renderReading(selected); renderCalendar(); renderStats();
 </script>
 </body>
 </html>
